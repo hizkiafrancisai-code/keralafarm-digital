@@ -1,1 +1,16 @@
 project_id = "uieuqmerqbqzmhmxngqd"
+
+[functions.voice-query]
+verify_jwt = false
+
+[functions.disease-detection]
+verify_jwt = false
+
+[functions.climate-predictions]
+verify_jwt = false
+
+[functions.market-intelligence]
+verify_jwt = false
+
+[functions.microplastic-detection]
+verify_jwt = false
