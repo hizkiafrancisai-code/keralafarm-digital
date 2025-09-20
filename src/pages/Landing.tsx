@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Link } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
+import heroImage from '@/assets/kerala-agriculture-hero.jpg';
 import { 
   CloudRain, 
   Microscope, 
@@ -83,9 +84,14 @@ const Landing = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary to-primary-dark min-h-screen flex items-center overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10"></div>
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        />
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 bg-black/40"></div>
         
         <div className="container mx-auto px-4 py-20 relative z-10">
           <div className="max-w-4xl mx-auto text-center text-white">
