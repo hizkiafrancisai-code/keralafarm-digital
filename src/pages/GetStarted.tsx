@@ -26,6 +26,8 @@ const GetStarted = () => {
     e.preventDefault();
     // Handle form submission - connect to backend later
     console.log('Form submitted:', formData);
+    // Redirect to home page after registration
+    window.location.href = '/home';
   };
 
   const handleInputChange = (field: string, value: string) => {

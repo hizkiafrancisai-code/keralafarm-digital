@@ -10,7 +10,6 @@ import {
   Mic, 
   Bug, 
   Calendar, 
-  Satellite, 
   Shield, 
   Phone, 
   TrendingUp,
@@ -52,12 +51,6 @@ const Landing = () => {
       title: t('features.cropCalendar'),
       description: 'Plan your farming activities with personalized schedules and seasonal reminders.',
       color: 'bg-feature-purple',
-    },
-    {
-      icon: <Satellite className="h-6 w-6" />,
-      title: t('features.satelliteDamageMapping'),
-      description: 'Monitor crop damage using satellite imagery and remote sensing.',
-      color: 'bg-feature-blue',
     },
     {
       icon: <Shield className="h-6 w-6" />,

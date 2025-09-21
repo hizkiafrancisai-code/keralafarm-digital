@@ -12,6 +12,8 @@ import ClimateSmartPredictions from "./pages/features/ClimateSmartPredictions";
 import CropCalendar from "./pages/features/CropCalendar";
 import CropDiseaseDetection from "./pages/features/CropDiseaseDetection";
 import VoiceBasedQueries from "./pages/features/VoiceBasedQueries";
+import MarketIntelligence from "./pages/features/MarketIntelligence";
+import EmergencySOS from "./pages/features/EmergencySOS";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,10 +35,9 @@ const App = () => (
             <Route path="/features/voice-based-queries" element={<VoiceBasedQueries />} />
             <Route path="/features/crop-disease-detection" element={<CropDiseaseDetection />} />
             <Route path="/features/crop-calendar" element={<CropCalendar />} />
-            <Route path="/features/satellite-damage-mapping" element={<ClimateSmartPredictions />} />
             <Route path="/features/smart-insurance-connector" element={<CropCalendar />} />
-            <Route path="/features/emergency-sos-system" element={<VoiceBasedQueries />} />
-            <Route path="/features/market-intelligence" element={<ClimateSmartPredictions />} />
+            <Route path="/features/emergency-sos-system" element={<EmergencySOS />} />
+            <Route path="/features/market-intelligence" element={<MarketIntelligence />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

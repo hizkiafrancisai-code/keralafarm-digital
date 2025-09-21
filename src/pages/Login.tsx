@@ -20,6 +20,8 @@ const Login = () => {
     e.preventDefault();
     // Handle login - connect to backend later
     console.log('Login submitted:', formData);
+    // Redirect to home page after "login"
+    window.location.href = '/home';
   };
 
   const handleInputChange = (field: string, value: string) => {
