@@ -16,6 +16,9 @@ const translations = {
     'nav.contact': 'Contact',
     'nav.login': 'Login',
     'nav.getStarted': 'Get Started',
+    'nav.voiceQueries': 'Voice Queries',
+    'nav.climatePredictions': 'Climate Predictions',
+    'nav.signOut': 'Sign Out',
     
     // Landing Page
     'landing.title': 'Smart Farming for Kerala Farmers',
@@ -63,6 +66,9 @@ const translations = {
     'nav.contact': 'ബന്ധപ്പെടുക',
     'nav.login': 'ലോഗിൻ',
     'nav.getStarted': 'ആരംഭിക്കുക',
+    'nav.voiceQueries': 'ശബ്ദ അന്വേഷണങ്ങൾ',
+    'nav.climatePredictions': 'കാലാവസ്ഥാ പ്രവചനങ്ങൾ',
+    'nav.signOut': 'സൈൻ ഔട്ട്',
     
     // Landing Page
     'landing.title': 'കേരള കർഷകർക്കായി സ്മാർട്ട് കൃഷി',

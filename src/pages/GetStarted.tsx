@@ -5,14 +5,21 @@ import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import Navigation from '@/components/Navigation';
 import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useToast } from '@/components/ui/use-toast';
 
 const GetStarted = () => {
   const { t } = useLanguage();
+  const { user, signUp } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
+    email: '',
+    password: '',
     mobile: '',
     district: '',
     village: '',
@@ -21,13 +28,48 @@ const GetStarted = () => {
     soilType: '',
     irrigationMethod: ''
   });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission - connect to backend later
-    console.log('Form submitted:', formData);
-    // Redirect to home page after registration
-    window.location.href = '/home';
+    setLoading(true);
+    
+    if (user) {
+      // User is already logged in, just save profile data and go to home
+      toast({
+        title: "Profile Updated",
+        description: "Your farm profile has been created successfully!",
+      });
+      navigate('/home');
+      return;
+    }
+
+    // New user signup
+    const { error } = await signUp(formData.email, formData.password, {
+      name: formData.name,
+      mobile: formData.mobile,
+      district: formData.district,
+      village: formData.village,
+      landSize: formData.landSize,
+      primaryCrop: formData.primaryCrop,
+      soilType: formData.soilType,
+      irrigationMethod: formData.irrigationMethod
+    });
+    
+    if (error) {
+      toast({
+        title: "Signup Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+      setLoading(false);
+    } else {
+      toast({
+        title: "Account Created!",
+        description: "Your farm profile has been created successfully!",
+      });
+      navigate('/home');
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -77,6 +119,42 @@ const GetStarted = () => {
         <div className="max-w-2xl mx-auto">
           <Card className="p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Account Information - Only show for new users */}
+              {!user && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-foreground border-b border-border pb-2">
+                    Account Information
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email Address *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="farmer@example.com"
+                        value={formData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="password">Password *</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="Create a secure password"
+                        value={formData.password}
+                        onChange={(e) => handleInputChange('password', e.target.value)}
+                        required
+                        minLength={6}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Personal Information */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-foreground border-b border-border pb-2">
@@ -221,9 +299,10 @@ const GetStarted = () => {
               <div className="pt-6">
                 <Button 
                   type="submit" 
+                  disabled={loading}
                   className="w-full bg-primary hover:bg-primary-dark text-white h-12 text-lg"
                 >
-                  Create My Farm Profile
+                  {loading ? 'Creating Profile...' : (user ? 'Update My Profile' : 'Create My Farm Profile')}
                 </Button>
                 <p className="text-sm text-muted-foreground text-center mt-4">
                   By creating a profile, you agree to our Terms of Service and Privacy Policy

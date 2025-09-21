@@ -1,10 +1,17 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Globe } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Globe, LogOut } from 'lucide-react';
 
 const Navigation = () => {
   const { language, toggleLanguage, t } = useLanguage();
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    window.location.href = '/';
+  };
 
   return (
     <nav className="bg-white shadow-sm border-b border-border">
@@ -23,15 +30,28 @@ const Navigation = () => {
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-foreground hover:text-primary transition-colors">
-              {t('nav.features')}
-            </Link>
-            <Link to="/" className="text-foreground hover:text-primary transition-colors">
-              {t('nav.howItWorks')}
-            </Link>
-            <Link to="/" className="text-foreground hover:text-primary transition-colors">
-              {t('nav.contact')}
-            </Link>
+            {user ? (
+              <>
+                <Link to="/features/voice-based-queries" className="text-foreground hover:text-primary transition-colors">
+                  {t('nav.voiceQueries')}
+                </Link>
+                <Link to="/features/climate-smart-predictions" className="text-foreground hover:text-primary transition-colors">
+                  {t('nav.climatePredictions')}
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/" className="text-foreground hover:text-primary transition-colors">
+                  {t('nav.features')}
+                </Link>
+                <Link to="/" className="text-foreground hover:text-primary transition-colors">
+                  {t('nav.howItWorks')}
+                </Link>
+                <Link to="/" className="text-foreground hover:text-primary transition-colors">
+                  {t('nav.contact')}
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Right Side Actions */}
@@ -49,19 +69,32 @@ const Navigation = () => {
               </span>
             </Button>
 
-            {/* Login Button */}
-            <Link to="/login">
-              <Button variant="ghost" size="sm">
-                {t('nav.login')}
+            {user ? (
+              /* Authenticated User Actions */
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={handleSignOut}
+                className="flex items-center space-x-1"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>{t('nav.signOut')}</span>
               </Button>
-            </Link>
-
-            {/* Get Started Button */}
-            <Link to="/get-started">
-              <Button size="sm" className="bg-primary hover:bg-primary-dark text-white">
-                {t('nav.getStarted')}
-              </Button>
-            </Link>
+            ) : (
+              /* Unauthenticated User Actions */
+              <>
+                <Link to="/login">
+                  <Button variant="ghost" size="sm">
+                    {t('nav.login')}
+                  </Button>
+                </Link>
+                <Link to="/get-started">
+                  <Button size="sm" className="bg-primary hover:bg-primary-dark text-white">
+                    {t('nav.getStarted')}
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

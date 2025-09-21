@@ -4,24 +4,44 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import Navigation from '@/components/Navigation';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useToast } from '@/components/ui/use-toast';
 
 const Login = () => {
   const { t } = useLanguage();
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
-    mobile: '',
+    email: '',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login - connect to backend later
-    console.log('Login submitted:', formData);
-    // Redirect to home page after "login"
-    window.location.href = '/home';
+    setLoading(true);
+    
+    const { error } = await signIn(formData.email, formData.password);
+    
+    if (error) {
+      toast({
+        title: "Login Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+      setLoading(false);
+    } else {
+      toast({
+        title: "Welcome back!",
+        description: "Successfully logged in.",
+      });
+      navigate('/home');
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -59,13 +79,13 @@ const Login = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="mobile">Mobile Number</Label>
+                <Label htmlFor="email">Email Address</Label>
                 <Input
-                  id="mobile"
-                  type="tel"
-                  placeholder="+91 9999999999"
-                  value={formData.mobile}
-                  onChange={(e) => handleInputChange('mobile', e.target.value)}
+                  id="email"
+                  type="email"
+                  placeholder="farmer@example.com"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
                   required
                   className="h-12"
                 />
@@ -113,9 +133,10 @@ const Login = () => {
 
               <Button 
                 type="submit" 
+                disabled={loading}
                 className="w-full bg-primary hover:bg-primary-dark text-white h-12 text-lg"
               >
-                Sign In
+                {loading ? 'Signing In...' : 'Sign In'}
               </Button>
 
               <div className="text-center pt-4">
